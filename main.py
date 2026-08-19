@@ -49,7 +49,7 @@ def validate_columns(df, required_columns):
 movie_required_columns = ["year", "ActorId", "Name", "MovieId", "Title", "genre", "Country", "gross"]
 if validate_columns(movie_df, movie_required_columns):
     # Define all possible genres
-    all_genres = ["Romance", "Film-Noir", "Music", "Comedy", "Biography", "Sport", "Drama", "Animation", "Sci-Fi", 
+    all_genres = ["Incomes", "Outcomes", "Taxes", "Fees", "Wages", "Health", "Self-Emporwment", "Animation", "Sci-Fi", 
                   "Western", "War", "Adventure", "Musical", "Action", "Horror", "Thriller", "Fantasy", "Mystery", 
                   "Crime", "Family", "History"]
 
