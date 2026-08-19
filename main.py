@@ -5,20 +5,20 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 
 # Show the page title and description.
-st.set_page_config(page_title="Movies and Animal Data Visualization", page_icon="🎬")
-st.title("🎬 Movies and Animal Data Visualization")
+st.set_page_config(page_title="Wage and Expenses Data Visualization", page_icon="🎬")
+st.title("🎬 Financial  and Freakonomicks Data Visualization")
 st.write(
     """
-    This app visualizes data from [The Movie Databases Just click on the widgets below to explore!
+
     """
 )
 
-# Load the movie data from a CSV. We're caching this so it doesn't reload every time the app
+# Load the bank data from a CSV. We're caching this so it doesn't reload every time the app
 # reruns (e.g., if the user interacts with the widgets).
 #@st.cache
 def load_movie_data():
     try:
-        df = pd.read_csv("data/data/movies_genres_summary4.csv")
+        df = pd.read_csv("data/data/comprovativo_banco.csv")
         return df
     except Exception as e:
         st.error(f"Error loading movie data: {e}")
@@ -28,7 +28,7 @@ def load_movie_data():
 #@st.cache
 def load_species_data():
     try:
-        df = pd.read_csv("data/data/species_strategies2.csv")
+        df = pd.read_csv("data/data/comprovativo_banco.csv")
         return df
     except Exception as e:
         st.error(f"Error loading species data: {e}")
