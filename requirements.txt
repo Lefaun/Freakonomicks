@@ -2,3 +2,4 @@ streamlit
 pandas
 altair
 scikit-learn
+plotly.express as px
