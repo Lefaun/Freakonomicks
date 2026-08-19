@@ -18,7 +18,7 @@ st.write(
 #@st.cache
 def load_movie_data():
     try:
-        df = pd.read_csv("data/data/comprovativo_banco.csv")
+        df = pd.read_csv("comprovativo_banco.csv")
         return df
     except Exception as e:
         st.error(f"Error loading movie data: {e}")
@@ -28,7 +28,7 @@ def load_movie_data():
 #@st.cache
 def load_species_data():
     try:
-        df = pd.read_csv("data/data/comprovativo_banco.csv")
+        df = pd.read_csv("comprovativo_banco.csv")
         return df
     except Exception as e:
         st.error(f"Error loading species data: {e}")
