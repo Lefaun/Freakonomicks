@@ -4,10 +4,11 @@ import streamlit as st
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import unicodedata
+import io
 
 # Show the page title and description.
 st.set_page_config(page_title="Wage and Expenses Data Visualization", page_icon="💰")
-st.title("💰 Financial Data Visualization")
+st.title("💰 Financial Data Visualization - Frakonomics")
 st.write(
     """
     Explora o teu extrato bancário: filtra por categoria e ano, vê a evolução
@@ -65,6 +66,47 @@ def to_number(series):
     )
 
 
+def read_bank_csv(path):
+    """Lê o CSV do banco, ignorando linhas de metadados antes da tabela real
+    (nome da conta, período, etc.) que os exports da Caixa costumam ter."""
+    encodings_to_try = ["cp1252", "latin1", "utf-8-sig"]
+    raw_text = None
+    used_encoding = None
+    for enc in encodings_to_try:
+        try:
+            with open(path, "r", encoding=enc) as f:
+                raw_text = f.read()
+            used_encoding = enc
+            break
+        except (UnicodeDecodeError, FileNotFoundError):
+            continue
+    if raw_text is None:
+        raise FileNotFoundError(f"Não consegui abrir {path}")
+
+    lines = raw_text.splitlines()
+
+    # Encontra a linha do cabeçalho real da tabela (contém "Data mov")
+    header_idx = None
+    for i, line in enumerate(lines):
+        if "DATA MOV" in strip_accents(line):
+            header_idx = i
+            break
+    if header_idx is None:
+        header_idx = 0  # fallback: assume que não há metadados
+
+    header_line = lines[header_idx]
+    # Detecta o separador mais provável a partir da linha de cabeçalho
+    sep = ";" if header_line.count(";") >= header_line.count(",") else ","
+
+    df = pd.read_csv(
+        io.StringIO("\n".join(lines[header_idx:])),
+        sep=sep,
+        engine="python",
+        on_bad_lines="skip",
+    )
+    return df
+
+
 def prepare_df(df):
     """Limpa e enriquece o dataframe cru do banco."""
     df.columns = [c.strip() for c in df.columns]
@@ -105,7 +147,7 @@ def prepare_df(df):
 @st.cache_data
 def load_movie_data():
     try:
-        df = pd.read_csv("comprovativo_banco.csv", sep=";", encoding="cp1252")
+        df = read_bank_csv("comprovativo_banco.csv")
         return prepare_df(df)
     except Exception as e:
         st.error(f"Error loading transaction data: {e}")
@@ -116,7 +158,7 @@ def load_movie_data():
 @st.cache_data
 def load_species_data():
     try:
-        df = pd.read_csv("comprovativo_banco.csv", sep=";", encoding="cp1252")
+        df = read_bank_csv("comprovativo_banco.csv")
         return prepare_df(df)
     except Exception as e:
         st.error(f"Error loading transaction data: {e}")
