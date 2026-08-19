@@ -49,7 +49,7 @@ def validate_columns(df, required_columns):
 movie_required_columns = ["year", "ActorId", "Name", "MovieId", "Title", "genre", "Country", "gross"]
 if validate_columns(movie_df, movie_required_columns):
     # Define all possible genres
-    all_genres = ["Incomes", "Outcomes", "Taxes", "Fees", "Wages", "Health", "Self-Emporwment", "Animation", "Sci-Fi", 
+    all_genres = ["Incomes", "Outcomes", "Taxes", "Fees", "Wages", "Health", "Self-Empowrment", "Animation", "Sci-Fi", 
                   "Western", "War", "Adventure", "Musical", "Action", "Horror", "Thriller", "Fantasy", "Mystery", 
                   "Crime", "Family", "History"]
 
@@ -61,7 +61,7 @@ if validate_columns(movie_df, movie_required_columns):
     )
 
     # Show a slider widget with the years using `st.slider`.
-    years = st.slider("Years", 1986, 2016, (2000, 2024))
+    years = st.slider("Years", 2024, 2026, (2024, 2026))
 
     # Filter the movie DataFrame based on the widget input and reshape it.
     df_filtered = movie_df[(movie_df["genre"].isin(genres)) & (movie_df["year"].between(years[0], years[1]))]
